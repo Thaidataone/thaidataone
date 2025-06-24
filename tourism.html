@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>สถานที่ท่องเที่ยว – ThaidataOne</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 2em;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #1d3557;
+        }
+        .container {
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📍 ข้อมูลสถานที่ท่องเที่ยวจาก ThaidataOne</h1>
+        <table id="tourism" class="display">
+            <thead>
+                <tr>
+                    <th>ชื่อสถานที่</th>
+                    <th>อำเภอ</th>
+                    <th>ประเภท</th>
+                    <th>คำอธิบาย</th>
+                    <th>พิกัด</th>
+                    <th>ภาพ</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+        fetch('datasets/01_tourist_spots.csv')
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.trim().split('\n').slice(1);
+            for (const row of rows) {
+                const cols = row.split(',');
+                const image = '<img src="' + cols[5] + '" alt="รูป" width="100"/>';
+                const htmlRow = '<tr>' +
+                    '<td>' + cols[0] + '</td>' +
+                    '<td>' + cols[1] + '</td>' +
+                    '<td>' + cols[2] + '</td>' +
+                    '<td>' + cols[3] + '</td>' +
+                    '<td>' + cols[4] + '</td>' +
+                    '<td>' + image + '</td>' +
+                '</tr>';
+                document.querySelector('#tourism tbody').innerHTML += htmlRow;
+            }
+            new DataTable('#tourism');
+        });
+    </script>
+</body>
+</html>
